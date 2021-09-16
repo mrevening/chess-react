@@ -1,8 +1,13 @@
 .tile {
     height: 100px;
-    width: 100px;
+    /* width: 100px; */
 }
 
 .blackTile {
     background-color: green;
+}
+
+#root .col {
+    padding-right: 0;
+    padding-left: 0;
 }
