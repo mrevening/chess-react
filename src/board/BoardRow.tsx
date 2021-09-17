@@ -10,7 +10,7 @@ export default function BoardRow({ row, black }: BoardRowProps){
     let cols: string[] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     return (
         <Row noGutters={true}>
-            { cols.map((col, i) => <BoardCol key={col} row={row} col={col} black={i % 2 == 0 ? !black : black}/> )}
+            { cols.map((col, i) => <BoardCol key={col} row={row} col={col} black={i % 2 === 0 ? !black : black}/> )}
         </Row>
     );
 }

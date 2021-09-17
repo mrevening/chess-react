@@ -6,6 +6,6 @@ interface TileProps {
 
 export default function Tile( { col, row, isBlack }: TileProps ){
     return(
-        <div className={'tile ' + (isBlack ? 'blackTile' : undefined )} >{col}{row}</div>
+        <div className={'tile ' + (isBlack ? 'blackTile' : 'whiteTile' )} >{col}{row}</div>
     );
 }

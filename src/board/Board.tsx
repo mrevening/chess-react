@@ -1,4 +1,4 @@
-import './Board.css'
+import './Board.scss'
 import { Container } from 'reactstrap'
 import BoardRow from './BoardRow'
 
@@ -7,7 +7,7 @@ export default function Board(){
     let black: boolean = false;
     return (
         <Container>
-            { rows.reverse().map((row, i) => { return <BoardRow key={row} row={row} black={ i % 2 == 0 ? black : !black}/> })}
+            { rows.reverse().map((row, i) => { return <BoardRow key={row} row={row} black={ i % 2 === 0 ? black : !black}/> })}
         </Container >
     )
 }
