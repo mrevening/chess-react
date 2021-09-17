@@ -14,6 +14,10 @@
     padding-left: 0;
 }
 
+#root .activeFigure {
+    display: none;
+}
+
 #root img {
     width: 80%;
     height: 80%;
@@ -37,9 +41,6 @@ $md-container-max-width: map-get($grid-breakpoints, "md");
             #root .container {
                 max-width: $md-container-max-width
             }
-            // #root img {
-            //     size: 150%
-            // }
         }
         @else if ($container-max-width and $container-max-width <= $md-container-max-width) {
             #root .tile {        
