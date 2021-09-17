@@ -1,10 +1,11 @@
 import FigureImage from './FigureImage'
 import { useAppDispatch } from 'hooks'
 import { clickTile } from './BoardSlice'
+import { RowLine, ColumnLine } from './Interface'
 
 interface TileProps {
-    col: string
-    row: string
+    col: ColumnLine
+    row: RowLine
     isBlack: boolean
 }
 

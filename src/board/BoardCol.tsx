@@ -1,9 +1,10 @@
 import { Col } from 'reactstrap'
 import Tile from './Tile'
+import { RowLine, ColumnLine } from './Interface'
 
 interface BoardColProps{
-    col: string
-    row: string
+    col: ColumnLine
+    row: RowLine
     black: boolean
 }
 
