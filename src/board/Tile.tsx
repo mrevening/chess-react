@@ -1,3 +1,5 @@
+import FigureImage from './FigureImage'
+
 interface TileProps {
     col: string
     row: string
@@ -5,7 +7,8 @@ interface TileProps {
 }
 
 export default function Tile( { col, row, isBlack }: TileProps ){
+
     return(
-        <div className={'tile ' + (isBlack ? 'blackTile' : 'whiteTile' )} >{col}{row}</div>
+        <div className={'tile ' + (isBlack ? 'blackTile' : 'whiteTile' )} ><FigureImage row={row} col={col} /></div>
     );
 }
