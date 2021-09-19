@@ -12,6 +12,6 @@ interface TileProps {
 export default function Tile( { col, row, isBlack }: TileProps ){
     const dispatch = useAppDispatch();
     return(
-        <div className={'tile ' + (isBlack ? 'blackTile' : 'whiteTile' )} onClick={() => dispatch(clickSquare({col, row}))}>{row}{col}<FigureImage row={row} col={col} /></div>
+        <div className={'tile ' + (isBlack ? 'blackTile' : 'whiteTile' )} onClick={() => dispatch(clickSquare({col, row}))}><FigureImage row={row} col={col} /></div>
     );
 }

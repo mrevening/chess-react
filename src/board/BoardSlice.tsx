@@ -19,7 +19,7 @@ interface ClickSquare {
   row: RowLine
 }
 
-enum PlayersDirection { Up = -1, Down = 1}
+enum PlayersDirection { Up = 1, Down = -1}
 
 
 
@@ -32,7 +32,7 @@ export const boardSlice = createSlice({
       const clickedFigure = state.figures.find(f => f.Column === clickedColumn && f.Row === clickedRow)
       const currentPlayer = state.currentPlayerTurn
       const activeFigure = state.activeFigure
-      const direction = currentPlayer === Player.White ? -1 : 1
+      const direction = currentPlayer === Player.White ? PlayersDirection.Up : PlayersDirection.Down
       const pionsInitialLine = currentPlayer === Player.White ? RowLine.Two : RowLine.Seven
       
       function anyActiveFigure() { return state.activeFigure }
@@ -41,16 +41,25 @@ export const boardSlice = createSlice({
       function isOpponentPieceCaptured() { return clickedFigure && clickedFigure.Player !== state.currentPlayerTurn}
       function getOpponentsFigure() { return clickedFigure && state.figures.find(f => f.Id === clickedFigure.Id) }
       function getLastLine() { return currentPlayer === Player.White ? RowLine.One : RowLine.Eight }
-      function isTheSameColumn(activeFigure : Figure) { return activeFigure.Column === clickedColumn}
-      function isSquareInFrontEmpty() { return !state.figures.some(f => f.Column === clickedColumn && f.Row === clickedRow )}
-      function isTwoSquaresInFrontEmpty() { return !state.figures.some(f => f.Column === clickedColumn && f.Row + 2*direction  === clickedRow )}
+      function isClickInTheSameColumn(activeFigure : Figure) { return activeFigure.Column === clickedColumn}
+      // function isSquareInFrontEmpty() { return !state.figures.some(f => f.Column === clickedColumn && f.Row === clickedRow )}
+      function isNSquaresInFrontEmpty(activeFigure : Figure, n: number) { return !state.figures.some(f => f.Column === activeFigure.Column && f.Row === activeFigure.Row + n*direction )}
+      // function isTwoSquaresInFrontEmpty() { return !state.figures.some(f => f.Column === clickedColumn && f.Row + 2*direction  === clickedRow )}
       function isPieceOnStartLine(activeFigure : Figure) { return activeFigure.Row === pionsInitialLine}
-      function clickedOneSquareInFront(activeFigure : Figure) { return isTheSameColumn(activeFigure) && activeFigure?.Row === clickedRow + 1*direction }
-      function clickedTwoSquareInFront(activeFigure : Figure) { return isTheSameColumn(activeFigure) && activeFigure?.Row === clickedRow + 2*direction }
-      function isOneSquareForwardMove(activeFigure : Figure): boolean { return clickedOneSquareInFront(activeFigure) }
-      function isTwoSquareForwardMove(activeFigure : Figure): boolean { return clickedTwoSquareInFront(activeFigure) }
-      function canMoveForwardOneSquare(activeFigure : Figure): boolean { return isSquareInFrontEmpty() && clickedOneSquareInFront(activeFigure) }
-      function canMoveForwardTwoSquares(activeFigure : Figure): boolean { return isSquareInFrontEmpty() && isTwoSquaresInFrontEmpty() && isPieceOnStartLine(activeFigure) }
+      function clickedNSquaresInFront(activeFigure : Figure, n: number) { return isClickInTheSameColumn(activeFigure) && activeFigure.Row === clickedRow - n*direction }
+      // function clickedOneSquareInFront(activeFigure : Figure) { return isTheSameColumn(activeFigure) && activeFigure?.Row === clickedRow + 1*direction }
+      // function clickedTwoSquareInFront(activeFigure : Figure) { return isTheSameColumn(activeFigure) && activeFigure?.Row === clickedRow + 2*direction }
+      function isNSquaresForwardMove(activeFigure : Figure, n: number): boolean { return clickedNSquaresInFront(activeFigure, n) }
+      // function isOneSquareForwardMove(activeFigure : Figure): boolean { return clickedNSquaresInFront(activeFigure, 1) }
+      // function isTwoSquareForwardMove(activeFigure : Figure): boolean { return clickedNSquaresInFront(activeFigure, 2) }
+      // function canMoveForwardOneSquare(activeFigure : Figure): boolean { return isNSquaresInFrontEmpty(1) && clickedNSquaresInFront(activeFigure, 1) }
+      // function canMoveForwardTwoSquares(activeFigure : Figure): boolean { return isNSquaresInFrontEmpty(1) && isNSquaresInFrontEmpty(2) && isPieceOnStartLine(activeFigure) }
+      function canMoveForwardNSquares(activeFigure : Figure, n: number): boolean { 
+        for (let i = 1; i <= n; i++) {
+          if (!isNSquaresInFrontEmpty(activeFigure, i)) return false
+        }
+        return true;
+      }
       
 
       function changeTurn () { state.currentPlayerTurn = currentPlayer === Player.White ? Player.Black : Player.White }
@@ -72,9 +81,9 @@ export const boardSlice = createSlice({
         // const startingLine = getStartLine()
         // const maxMove = (activeFigure.Row === startingLine) ? 2 : 1;
 
-
-        if(isOneSquareForwardMove(activeFigure) && canMoveForwardOneSquare(activeFigure)) return true
-        else if(isTwoSquareForwardMove(activeFigure) && canMoveForwardTwoSquares(activeFigure)) return true
+        // console.log(canMoveForwardNSquares(activeFigure, 1))
+        if(isNSquaresForwardMove(activeFigure, 1) && canMoveForwardNSquares(activeFigure, 1)) return true
+        else if(isNSquaresForwardMove(activeFigure, 2) && canMoveForwardNSquares(activeFigure, 2) && isPieceOnStartLine(activeFigure) ) return true
         
 
         // if (activeFigure.Column === clickedColumn){
