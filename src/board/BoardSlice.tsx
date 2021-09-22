@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction  } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
-import {InitFigures, Figure, Player, FigureType, RowLine, ColumnLine } from './Interface'
+import {InitFigures, Figure, Player, FigureType, RowLine, ColumnLine, PlayersDirection } from './Interface'
 
 interface BoardSlice {
   figures: Array<Figure>,
@@ -19,10 +19,6 @@ interface ClickSquare {
   row: RowLine
 }
 
-enum PlayersDirection { Up = 1, Down = -1}
-
-
-
 export const boardSlice = createSlice({
   name: 'board',
   initialState,
@@ -35,6 +31,7 @@ export const boardSlice = createSlice({
       const direction = currentPlayer === Player.White ? PlayersDirection.Up : PlayersDirection.Down
       const pionsInitialLine = currentPlayer === Player.White ? RowLine.Two : RowLine.Seven
       const lastRow = currentPlayer === Player.White ? RowLine.Eight : RowLine.One
+      const enPassantIsActive = false
       
       function anyActiveFigure() { return state.activeFigure }
       function isPlayersFigure() { return clickedPiece && clickedPiece.Player === state.currentPlayerTurn}
@@ -43,6 +40,7 @@ export const boardSlice = createSlice({
       function isOpponentPieceCaptured() { return clickedPiece && clickedPiece.Player !== state.currentPlayerTurn}
       function getOpponentsPiece() { return clickedPiece && state.figures.find(f => f.Id === clickedPiece.Id) }
       function isClickInTheSameColumn(activeFigure : Figure) { return activeFigure.Column === clickedColumn}
+      function isClickInTheSameRow(activeFigure : Figure) { return activeFigure.Row === clickedRow}
       function isClickInNeigbourColumn(activeFigure : Figure) { return Math.abs(clickedColumn - activeFigure.Column) === 1}
       function isNSquaresInFrontEmpty(activeFigure : Figure, n: number) { return !state.figures.some(f => f.Column === activeFigure.Column && f.Row === activeFigure.Row + n*direction )}
       function isPieceOnStartLine(activeFigure : Figure) { return activeFigure.Row === pionsInitialLine}
@@ -70,9 +68,25 @@ export const boardSlice = createSlice({
       function playerRemovesEnemyPiece () { captureEnemyPiece(); moveFigure(); }
       function changeFigureToQueen(figure : Figure) { 
         const fi = state.figures.findIndex(f => f.Id === figure.Id)
-        console.log(fi)
         state.figures[fi].Type = FigureType.Queen 
-        console.log(state.figures[fi].Type)
+      }
+      function otherFigureBlocksMoveInTheSameColumn(figure : Figure){
+        const distance = clickedRow - figure.Row
+        const moveDirection = distance > 0 ? 1: -1
+        for(let i = 1; i <= Math.abs(distance)-1; i++){
+          if (state.figures.some(f => f.Column === figure.Column && f.Row === figure.Row + i*moveDirection)) return true
+        }
+        if (state.figures.some(f => f.Row === clickedRow && f.Column === clickedColumn && f.Player === currentPlayer)) return true
+        else return false;
+      }
+      function otherFigureBlocksMoveInTheSameRow(figure : Figure){
+        const distance = clickedColumn - figure.Column
+        const moveDirection = distance > 0 ? 1: -1
+        for(let i = 1; i <= Math.abs(distance)-1; i++){
+          if (state.figures.some(f => f.Row === figure.Row && f.Column === figure.Column + i*moveDirection)) return true
+        }
+        if (state.figures.some(f => f.Row === clickedRow && f.Column === clickedColumn && f.Player === currentPlayer)) return true
+        else return false
       }
 
       function pawnMoves(activeFigure : Figure): boolean{
@@ -83,26 +97,35 @@ export const boardSlice = createSlice({
         return false;
       }
 
-       function kingMoves(activeFigure : Figure){
+      function knightMoves(activeFigure : Figure){
+
+
         return false
        }
-
-       function queenMoves(activeFigure : Figure){
+       
+      function bishopMoves(activeFigure : Figure){
         return false
-       }
+      }
 
-       function bishopMoves(activeFigure : Figure){
+      function rookMoves(activeFigure : Figure){
+        if (isClickInTheSameColumn(activeFigure) && !otherFigureBlocksMoveInTheSameColumn(activeFigure)) return true
+        else if (isClickInTheSameRow(activeFigure) && !otherFigureBlocksMoveInTheSameRow(activeFigure) ) return true
+
         return false
-       }
+      }
 
-       function knightMoves(activeFigure : Figure){
+      function queenMoves(activeFigure : Figure){
         return false
-       }
+      }
 
-       function rookMoves(activeFigure : Figure){
-        return false
-       }
+      function kingMoves(activeFigure : Figure){
+      return false
+      }
 
+
+
+
+       
       function isMoveAllowed(){
         if (!activeFigure) return false
         let isMoveAllowed = false

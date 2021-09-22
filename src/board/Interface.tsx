@@ -2,6 +2,7 @@ export enum Player { White, Black }
 export enum FigureType { Pawn, Knight, Bishop, Rook, Queen, King }
 export enum RowLine { One = 1, Two, Three, Four, Five, Six, Seven, Eight }
 export enum ColumnLine { A = 1, B, C, D, E, F, G, H }
+export enum PlayersDirection { Up = 1, Down = -1}
 export const Rows: Array<RowLine> = [RowLine.Eight, RowLine.Seven, RowLine.Six, RowLine.Five, RowLine.Four, RowLine.Three, RowLine.Two, RowLine.One];
 export const Columns: Array<ColumnLine> = [ColumnLine.A, ColumnLine.B, ColumnLine.C, ColumnLine.D, ColumnLine.E, ColumnLine.F, ColumnLine.G, ColumnLine.H];
 
@@ -14,13 +15,13 @@ export const FigureImagePaths: Array<FigureImagePath> = [
     { FigureType: FigureType.Pawn, Color: Player.White, ImgPath: "wpawn.png"  },
     { FigureType: FigureType.Knight, Color: Player.White, ImgPath: "wknight.png"  },
     { FigureType: FigureType.Bishop, Color: Player.White, ImgPath: "wbishop.png"  },
-    { FigureType: FigureType.Rook, Color: Player.White, ImgPath: "wpawn.png"  },
+    { FigureType: FigureType.Rook, Color: Player.White, ImgPath: "wrook.png"  },
     { FigureType: FigureType.Queen, Color: Player.White, ImgPath: "wqueen.png"  },
     { FigureType: FigureType.King, Color: Player.White, ImgPath: "wking.png"  },
     { FigureType: FigureType.Pawn, Color: Player.Black, ImgPath: "bpawn.png"  },
     { FigureType: FigureType.Knight, Color: Player.Black, ImgPath: "bknight.png"  },
     { FigureType: FigureType.Bishop, Color: Player.Black, ImgPath: "bbishop.png"  },
-    { FigureType: FigureType.Rook, Color: Player.Black, ImgPath: "bpawn.png"  },
+    { FigureType: FigureType.Rook, Color: Player.Black, ImgPath: "brook.png"  },
     { FigureType: FigureType.Queen, Color: Player.Black, ImgPath: "bqueen.png"  },
     { FigureType: FigureType.King, Color: Player.Black, ImgPath: "bking.png"  },
 ]
