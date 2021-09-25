@@ -41,6 +41,7 @@ export const boardSlice = createSlice({
       function getOpponentsPiece() { return clickedPiece && state.figures.find(f => f.Id === clickedPiece.Id) }
       function isClickInTheSameColumn(activeFigure : Figure) { return activeFigure.Column === clickedColumn}
       function isClickInTheSameRow(activeFigure : Figure) { return activeFigure.Row === clickedRow}
+      function isClickInDiagonal(activeFigure : Figure) { return Math.abs(activeFigure.Column - clickedColumn) === Math.abs(activeFigure.Row - clickedRow) }
       function isClickInNeigbourColumn(activeFigure : Figure) { return Math.abs(clickedColumn - activeFigure.Column) === 1}
       function isNSquaresInFrontEmpty(activeFigure : Figure, n: number) { return !state.figures.some(f => f.Column === activeFigure.Column && f.Row === activeFigure.Row + n*direction )}
       function isPieceOnStartLine(activeFigure : Figure) { return activeFigure.Row === pionsInitialLine}
@@ -88,6 +89,21 @@ export const boardSlice = createSlice({
         if (state.figures.some(f => f.Row === clickedRow && f.Column === clickedColumn && f.Player === currentPlayer)) return true
         else return false
       }
+      function isDiagonalMoveBlocked(figure : Figure){
+        const columnDistance = clickedColumn - figure.Column
+        const rowDistance = clickedRow - figure.Row
+        if(Math.abs(columnDistance) !== Math.abs(rowDistance)) return true
+        const distance = columnDistance;
+
+        const columnDirection = columnDistance > 0 ? 1: -1
+        const rowDirection = rowDistance > 0 ? 1: -1
+
+        for(let i = 1; i <= Math.abs(distance)-1; i++){
+          if (state.figures.some(f => f.Row === figure.Row +i*rowDirection && f.Column === figure.Column + i*columnDirection)) return true
+        }
+        if (state.figures.some(f => f.Row === clickedRow && f.Column === clickedColumn && f.Player === currentPlayer)) return true
+        else return false
+      }
 
       function pawnMoves(activeFigure : Figure): boolean{
         if (isNSquaresForwardMove(activeFigure, 1) && canMoveForwardNSquares(activeFigure, 1)) return true
@@ -104,6 +120,7 @@ export const boardSlice = createSlice({
        }
        
       function bishopMoves(activeFigure : Figure){
+        if (isClickInDiagonal(activeFigure) && !isDiagonalMoveBlocked(activeFigure)) return true
         return false
       }
 
