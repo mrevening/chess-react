@@ -50,6 +50,10 @@ export const boardSlice = createSlice({
       function isNSquaresForwardMove(activeFigure : Figure, n: number): boolean { return clickedNSquaresInFront(activeFigure, n) }
       function isNSquaresDiagonalMove(activeFigure : Figure, n: number): boolean { return clickedNSquaresInDiagonal(activeFigure, n) }
       function isNSquaresMoveAllDirection(activeFigure : Figure, n: number): boolean { return Math.abs(activeFigure.Column - clickedColumn) <= n && Math.abs(activeFigure.Row - clickedRow) <= n }
+      function isKnightMove(activeFigure : Figure): boolean { 
+        return (Math.abs(activeFigure.Column - clickedColumn) === 2 && Math.abs(activeFigure.Row - clickedRow) === 1)
+        ||  (Math.abs(activeFigure.Column - clickedColumn) === 1 && Math.abs(activeFigure.Row - clickedRow) === 2)
+      }
       function canMoveForwardNSquares(activeFigure : Figure, n: number): boolean { 
         for (let i = 1; i <= n; i++) { if (!isNSquaresInFrontEmpty(activeFigure, i)) return false }
         return true;
@@ -118,8 +122,7 @@ export const boardSlice = createSlice({
       }
 
       function knightMoves(activeFigure : Figure){
-
-
+        if(isKnightMove(activeFigure)) return true;
         return false
        }
        
