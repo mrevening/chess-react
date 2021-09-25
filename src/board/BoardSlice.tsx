@@ -49,6 +49,7 @@ export const boardSlice = createSlice({
       function clickedNSquaresInDiagonal(activeFigure : Figure, n: number) { return isClickInNeigbourColumn(activeFigure) && activeFigure.Row === clickedRow - n*direction }
       function isNSquaresForwardMove(activeFigure : Figure, n: number): boolean { return clickedNSquaresInFront(activeFigure, n) }
       function isNSquaresDiagonalMove(activeFigure : Figure, n: number): boolean { return clickedNSquaresInDiagonal(activeFigure, n) }
+      function isNSquaresMoveAllDirection(activeFigure : Figure, n: number): boolean { return Math.abs(activeFigure.Column - clickedColumn) <= n && Math.abs(activeFigure.Row - clickedRow) <= n }
       function canMoveForwardNSquares(activeFigure : Figure, n: number): boolean { 
         for (let i = 1; i <= n; i++) { if (!isNSquaresInFrontEmpty(activeFigure, i)) return false }
         return true;
@@ -104,6 +105,9 @@ export const boardSlice = createSlice({
         if (state.figures.some(f => f.Row === clickedRow && f.Column === clickedColumn && f.Player === currentPlayer)) return true
         else return false
       }
+      function isClickedFieldBlocked(){
+        return state.figures.some(f => f.Row === clickedRow && f.Column === clickedColumn && f.Player === currentPlayer) ? true : false
+      }
 
       function pawnMoves(activeFigure : Figure): boolean{
         if (isNSquaresForwardMove(activeFigure, 1) && canMoveForwardNSquares(activeFigure, 1)) return true
@@ -139,7 +143,8 @@ export const boardSlice = createSlice({
       }
 
       function kingMoves(activeFigure : Figure){
-      return false
+        if (isNSquaresMoveAllDirection(activeFigure, 1) && !isClickedFieldBlocked() ) return true
+        return false
       }
 
 
