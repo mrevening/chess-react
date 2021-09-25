@@ -132,6 +132,9 @@ export const boardSlice = createSlice({
       }
 
       function queenMoves(activeFigure : Figure){
+        if (isClickInTheSameColumn(activeFigure) && !otherFigureBlocksMoveInTheSameColumn(activeFigure)) return true
+        else if (isClickInTheSameRow(activeFigure) && !otherFigureBlocksMoveInTheSameRow(activeFigure) ) return true
+        else if (isClickInDiagonal(activeFigure) && !isDiagonalMoveBlocked(activeFigure)) return true
         return false
       }
 
