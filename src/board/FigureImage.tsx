@@ -1,16 +1,15 @@
 import { useAppSelector } from 'hooks'
-import { RowLine, ColumnLine, FigureImagePaths } from './Interface'
+import { FigureImagePaths, ISquare } from './Interface'
 
 interface FigureImageProps {
-    col: ColumnLine
-    row: RowLine
+    square: ISquare
 }
 
-export default function FigureImage( { col, row }: FigureImageProps ){
-    const figures = useAppSelector(store => store.board.figures)
-    const figure = figures.find(f => f.Column === col && f.Row === row)
+export default function FigureImage( { square }: FigureImageProps ){
+    const figures = useAppSelector(store => store.board.Figures)
+    const figure = figures.find(f => f.Square.Column === square.Column && f.Square.Row === square.Row)
     const activeFigure = useAppSelector(store => store.board.activeFigure)
-    const isActiveFigure = activeFigure && activeFigure.Column === col && activeFigure.Row === row
+    const isActiveFigure = activeFigure && activeFigure.Square == square
     const figureImg = figure && FigureImagePaths.find(p => p.Color === figure.Player && p.FigureType === figure.Type)?.ImgPath
 
     return figure ? <div className={(isActiveFigure ? 'activeFigure' : '' )}><img src={figure && "figures/" + figureImg} alt={figureImg} /></div> : <></>
