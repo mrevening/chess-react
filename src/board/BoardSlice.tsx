@@ -1,6 +1,17 @@
 import { createSlice, PayloadAction  } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
-import {IFigure, Player, FigureType, RowLine, ColumnLine, PlayersDirection, IBoard, Board, ISquare, IMove, Squares, Figures } from './Interface'
+
+import ISquare from 'board/interface/ISquare'
+import IMove from 'board/interface/IMove'
+import IFigure from 'board/interface/IFigure'
+
+import { Player } from 'board/enum/Player'
+import { FigureType } from 'board/enum/FigureType'
+import { RowLine } from 'board/enum/RowLine'
+import { PlayersDirection } from 'board/enum/PlayersDirection'
+
+import { Squares } from 'board/repository/Squares'
+import { Figures } from 'board/repository/Figures'
 
 interface BoardSlice {
   activeFigure: IFigure | undefined,

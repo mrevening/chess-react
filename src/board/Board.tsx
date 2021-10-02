@@ -1,7 +1,7 @@
 import './Board.scss'
 import { Container } from 'reactstrap'
 import BoardRow from './BoardRow'
-import { Rows } from './Interface'
+import { Rows } from 'board/repository/Rows'
 
 export default function Board(){
     return (

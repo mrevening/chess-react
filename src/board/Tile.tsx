@@ -1,7 +1,9 @@
 import FigureImage from './FigureImage'
 import { useAppDispatch } from 'hooks'
 import { clickSquare } from './BoardSlice'
-import { RowLine, ColumnLine, Color } from './Interface'
+import { RowLine, } from './enum/RowLine'
+import { ColumnLine } from './enum/ColumnLine'
+import { Color } from './enum/Color'
 import { useAppSelector } from 'hooks'
 
 interface TileProps {

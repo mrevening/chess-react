@@ -1,6 +1,7 @@
 import { Row } from 'reactstrap'
 import BoardCol from './BoardCol'
-import { Columns, RowLine } from './Interface'
+import { RowLine } from 'board/enum/RowLine'
+import { Columns } from 'board/repository/Columns'
 
 interface BoardRowProps{
     row: RowLine

@@ -1,5 +1,6 @@
 import { useAppSelector } from 'hooks'
-import { FigureImagePaths, ISquare } from './Interface'
+import ISquare from 'board/interface/ISquare'
+import { FigureImagePaths } from './repository/FigureImagePaths'
 
 interface FigureImageProps {
     square: ISquare
